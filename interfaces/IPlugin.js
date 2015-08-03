@@ -13,7 +13,7 @@ var plugin = {
     type: 'TEXT',
 
     /**
-     * @param {Object} info 
+     * @param {Object} info
      * @param {TelegramMessage} info.message
      * @param {Object} info.data Information from analyzer.
      * @returns {Boolean}
@@ -27,7 +27,7 @@ var plugin = {
     is: function (information) {},
 
     /**
-     * @param {Object} info 
+     * @param {Object} info
      * @param {TelegramMessage} info.message
      * @param {Object} info.data Information from analyzer.
      * @param {Object} [info.user] User object.
