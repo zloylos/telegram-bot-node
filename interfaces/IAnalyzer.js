@@ -1,6 +1,7 @@
 /**
  * @class Analyze message content.
  * @name IAnalyzer
+ * @interface
  * @static
  */
 var analyzer = {
