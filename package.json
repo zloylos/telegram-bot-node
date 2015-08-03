@@ -1,0 +1,22 @@
+{
+  "name": "telegram-bot-node",
+  "author": "Denis Hananein <i@zloylos.me> (http://zloy.me/)",
+  "version": "0.0.1",
+  "description": "Telegram bot project stub.",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "inherit": "2.2.2",
+    "node-telegram-bot-api": "0.11.0"
+  },
+  "devDependencies": {
+    "git-hooks": "1.0.0-rc.4",
+    "jscs": "2.0.0",
+    "jshint": "2.8.0"
+  },
+  "scripts": {
+    "validate": "npm run lint --silent",
+    "lint": "jshint . && jscs .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
