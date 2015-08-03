@@ -1,7 +1,7 @@
 {
   "name": "telegram-bot-node",
   "author": "Denis Hananein <i@zloylos.me> (http://zloy.me/)",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Telegram bot with plugins",
   "keywords": [
     "telegram",
@@ -24,5 +24,9 @@
     "validate": "npm run lint --silent",
     "lint": "jshint . && jscs .",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zloylos/telegram-bot-node.git"
   }
 }
