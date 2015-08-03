@@ -1,5 +1,5 @@
-# telegram-bot-stub
-Project stub for smart telegram bots
+# telegram-bot-node
+Telegram bot with plugins.
 
 ## Requirements
 * nodejs >= 0.10
