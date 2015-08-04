@@ -27,6 +27,7 @@ myBot.on('message', function (msg) {
   // Run plugins.
   myBot.process();
 });
+```
 
 ### Add plugins
 Create file with custom name into plugins folder.
