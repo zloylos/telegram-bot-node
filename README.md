@@ -18,7 +18,7 @@ var TelegramBot = require('telegram-bot-node').Bot;
 var myBot = new TelegramBot('<TOKEN>', {
   pooling: true,
   // Folder with plugins.
-  plugins: path.resolve(__dirname, './lib/plugins/)
+  plugins: path.resolve(__dirname, './lib/plugins/')
 });
 
 // Now listen `message` event.
