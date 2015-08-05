@@ -14,7 +14,7 @@ npm i --save telegram-bot-node
 ### Setup bot
 ```js
 var path = require('path');
-var TelegramBot = require('telegram-bot-node).Bot;
+var TelegramBot = require('telegram-bot-node').Bot;
 var myBot = new TelegramBot('<TOKEN>', {
   pooling: true,
   // Folder with plugins.
@@ -29,7 +29,48 @@ myBot.on('message', function (msg) {
 });
 ```
 
-### Add plugins
+### Plugins
+All plugins have standard interface:
+```js
+var plugin = {
+  // Type for match plugin on message.
+  type: MESSAGE_TYPES.COMMAND,
+  // Weight of plugin. If we have 2 or more plugins matched on one type, 
+  // then will be call plugin with more weight.
+  weight: 1,
+  // Test message selected type.
+  test: function (info) {},
+  // for messages, like: "/weather London"
+  handler: function (info, bot) {}
+};
+```
+
+Information object:
+```js
+var info = {
+  data: {}, // information from bot analyzers
+  message: {}, // current telegram message
+  user: {} || undefined // telegram user
+};
+```
+For use plugins you must set type of plugin. Allowed types stores in `MESSAGE_TYPES` var.
+```js
+var MESSAGE_TYPES = require('telegram-bot-node').MESSAGE_TYPES;
+```
+Types:
+* COMMAND
+* LOCATION
+* TEXT
+* PHOTO
+* AUDIO
+* VIDEO
+* ACTION
+* CONTACT
+* STICKER
+* DOCUMENT
+* ALL
+
+### Example: create weather plugin
 Create plugin, for example, weather. You can use custom file name.
 `./lib/plugins/commands/weather.js` or simple `./lib/plugins/weather.js`:
 ```js
@@ -40,20 +81,14 @@ var WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
 var K = 273.15;
 
 module.exports = {
-  // Type for match plugin on message.
   type: MESSAGE_TYPES.COMMAND,
-  // Weight of plugin. If we have 2 or more plugins matched on one type, 
-  // then will be call plugin with more weight.
   weight: 1,
-  // Test message selected type.
   test: function (info) {
-    // for messages, like: "/weather London"
     return info.data.command === 'weather';
   },
   // Handle function will call when type matcher and test passed.
   handle: function (info, bot) {
-    // log: bot
-    // all after command. For `/weather London` params = `London`.
+    // Command `/weather London` has info.data.params = `London`
     var city = info.data.params;
     request
       .get(WEATHER_URL)
@@ -72,21 +107,3 @@ module.exports = {
   }
 };
 ```
-
-### Message types.
-For use plugins you must set type of plugin. Allowed types stores in `MESSAGE_TYPES` var.
-```js
-var MESSAGE_TYPES = require('telegram-bot-node').MESSAGE_TYPES;
-```
-Types:
-* COMMAND
-* LOCATION
-* TEXT
-* PHOTO
-* AUDIO
-* VIDEO
-* ACTION
-* CONTACT
-* STICKER
-* DOCUMENT
-* ALL
