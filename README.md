@@ -48,7 +48,7 @@ var plugin = {
 Information object:
 ```js
 var info = {
-  data: {}, // information from bot analyzers
+  data: {}, // information from message analyzers
   message: {}, // current telegram message
   user: {} || undefined // telegram user
 };
