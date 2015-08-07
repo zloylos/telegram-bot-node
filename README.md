@@ -30,7 +30,7 @@ myBot.on('message', function (msg) {
 ```
 
 ### Plugins
-All plugins have standard interface:
+All plugins looks like this:
 ```js
 var plugin = {
   // Type for match plugin on message.
