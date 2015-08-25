@@ -13,7 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "inherit": "^2.2.2",
-    "node-telegram-bot-api": "^0.11.0"
+    "node-telegram-bot-api": "^0.11.0",
+    "vow": "^0.4.10"
   },
   "devDependencies": {
     "git-hooks": "^1.0.0-rc.4",
