@@ -1,7 +1,7 @@
 {
   "name": "telegram-bot-node",
   "author": "Denis Hananein <i@zloylos.me> (http://zloy.me/)",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Telegram bot with plugins",
   "keywords": [
     "telegram",
