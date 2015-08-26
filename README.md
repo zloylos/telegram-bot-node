@@ -16,16 +16,15 @@ npm i --save telegram-bot-node
 var path = require('path');
 var TelegramBot = require('telegram-bot-node').Bot;
 var myBot = new TelegramBot('<TOKEN>', {
-  pooling: true,
+  name: 'myBeatifulBot',
+  polling: true,
   // Folder with plugins.
   plugins: path.resolve(__dirname, './lib/plugins/')
 });
 
-// Now listen `message` event.
+// Now listen `message` event for polling.
 myBot.on('message', function (msg) {
   myBot.handle(msg);
-  // Run plugins.
-  myBot.process();
 });
 ```
 
@@ -33,14 +32,19 @@ myBot.on('message', function (msg) {
 All plugins looks like this:
 ```js
 var plugin = {
-  // Type for match plugin on message.
+  // Type for match a plugin to a message.
   type: MESSAGE_TYPES.COMMAND,
   // Weight of plugin. If we have 2 or more plugins matched on one type, 
   // then will be call plugin with more weight.
   weight: 1,
-  // Test message selected type.
-  test: function (info) {},
-  // for messages, like: "/weather London"
+  // Checking that a plugin is we need.
+  // Returns boolean. True if passed and false if not.
+  test: function (info) {
+    return info.data.command === 'weather';
+  },
+  // Function-handler for messages, like: "/weather London".
+  // It will be call if type of message and type of plugin the same. 
+  // And test function is passed.
   handler: function (info, bot) {}
 };
 ```
@@ -53,7 +57,7 @@ var info = {
   user: {} || undefined // telegram user
 };
 ```
-For use plugins you must set type of plugin. Allowed types stores in `MESSAGE_TYPES` var.
+For use plugins you must set type of a plugin. Allowed types store in `MESSAGE_TYPES` var.
 ```js
 var MESSAGE_TYPES = require('telegram-bot-node').MESSAGE_TYPES;
 ```
@@ -71,39 +75,49 @@ Types:
 * ALL
 
 ### Example: create weather plugin
-Create plugin, for example, weather. You can use custom file name.
-`./lib/plugins/commands/weather.js` or simple `./lib/plugins/weather.js`:
+Create weather plugin. You can use custom file name, for example `./lib/plugins/commands/weather.js` or simple `./lib/plugins/weather.js`:
 ```js
-// Allowed message types: audio, video, document, command and other.
 var MESSAGE_TYPES = require('telegram-bot-node').MESSAGE_TYPES;
 var request = require('superagent');
+// Promises lib, you can use bluebirs or other.
+var vow = require('vow');
 var WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
 var K = 273.15;
 
+
 module.exports = {
+  // Match only on commands.
   type: MESSAGE_TYPES.COMMAND,
   weight: 1,
   test: function (info) {
+    // Check that the command is `weather`.
     return info.data.command === 'weather';
   },
-  // Handle function will call when type matcher and test passed.
   handle: function (info, bot) {
     // Command `/weather London` has info.data.params = `London`
+    var deferred = vow.defer();
     var city = info.data.params;
     request
       .get(WEATHER_URL)
       .query({q: city})
-      .end(function (err, resp) {
-        if (err || resp.statusCode != 200) {
-          console.error(err || new Error('Status code: ' + resp.statusCode)));
+      .end(function (err, resp, body) {
+        if (err || resp.statusCode !== 200) {
+          var error = err || new Error('Status code: ' + resp.statusCode));
+          console.error(error);
+          return deferred.reject(error);
         }
-        var result = resp.body;
+        var result = body;
         var city = result.name;
         var temperature = Math.floor(result.main.temp - K);
         var description = result.weather[0].description;
-
-        bot.sendMessage('Weather in ' + city + ': ' + temperature + '°C. ' + description);
+        bot.sendMessage('Weather in ' + city + ': ' + temperature + '°C. ' + description)
+          .then(function (resp) {
+            deferred.resolve(resp);
+          }, function (reason) {
+            deferred.reject(reason);
+          });
       });
+      return deferred.promise();
   }
 };
 ```
