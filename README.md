@@ -72,6 +72,7 @@ Types:
 * CONTACT
 * STICKER
 * DOCUMENT
+* ALWAYS
 * ALL
 
 ### Example: create weather plugin
