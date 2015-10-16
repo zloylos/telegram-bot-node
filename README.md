@@ -80,7 +80,7 @@ Create weather plugin. You can use custom file name, for example `./lib/plugins/
 ```js
 var MESSAGE_TYPES = require('telegram-bot-node').MESSAGE_TYPES;
 var request = require('superagent');
-// Promises lib, you can use bluebirs or other.
+// Promises lib, you can use bluebirs, vow or other.
 var vow = require('vow');
 var WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather';
 var K = 273.15;
@@ -94,7 +94,7 @@ module.exports = {
     // Check that the command is `weather`.
     return info.data.command === 'weather';
   },
-  handle: function (info, bot) {
+  handler: function (info, bot) {
     // Command `/weather London` has info.data.params = `London`
     var deferred = vow.defer();
     var city = info.data.params;
